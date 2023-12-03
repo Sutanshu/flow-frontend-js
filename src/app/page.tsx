@@ -1,21 +1,33 @@
-import Image from 'next/image'
-import styles from './page.module.css'
-
+"use client";
+import Image from "next/image";
+import styles from "./page.module.css";
+import { useEffect, useState } from "react";
 export default function Home() {
+  const [data, setData] = useState("");
+  useEffect(() => {
+    fetch("http://127.0.0.1:5000/api", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then((res) => {
+      res.json().then((result) => {
+        setData(result?.data);
+      });
+    });
+  }, []);
+
   return (
     <main className={styles.main}>
       <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
+        <p>{data}</p>
         <div>
           <a
             href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
             target="_blank"
             rel="noopener noreferrer"
           >
-            By{' '}
+            By{" "}
             <Image
               src="/vercel.svg"
               alt="Vercel Logo"
@@ -91,5 +103,5 @@ export default function Home() {
         </a>
       </div>
     </main>
-  )
+  );
 }
